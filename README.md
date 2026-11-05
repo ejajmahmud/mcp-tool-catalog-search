@@ -47,16 +47,42 @@ graph TD
 
 ## 🛠️ Installation & Quickstart
 
+### Option 1: Install directly from GitHub
 ```bash
-pip install mcp_tool_catalog_search
+pip install git+https://github.com/ejajmahmud/mcp-tool-catalog-search.git
+```
+
+### Option 2: Install from Local Clone / Directory
+```bash
+# From within the repository folder:
+pip install .
+
+# Or from anywhere on your machine:
+pip install "C:\Users\EJAJ\.gemini\antigravity\scratch\ai-daily\2026-11-05\mcp-tool-catalog-search"
+```
+
+### Option 3: Install from the pre-built Wheel
+```bash
+pip install dist/mcp_tool_catalog_search-0.1.0-py3-none-any.whl
 ```
 
 ### Python API
 
 ```python
-import mcp_tool_catalog_search
+from mcp_tool_catalog_search.search import ToolCatalogSearch
 
-print(mcp_tool_catalog_search.__version__)
+# Initialize in-memory BM25 index
+catalog = ToolCatalogSearch()
+catalog.index_tools([
+    {"name": "query_postgres", "description": "Execute read-only SQL queries on Postgres"},
+    {"name": "send_slack_message", "description": "Post notifications to team Slack channels"},
+    {"name": "resize_image", "description": "Crop or scale PNG and JPEG assets"}
+])
+
+# Sub-millisecond retrieval of relevant tools:
+top_tools = catalog.search("fetch active users from sql database", top_k=1)
+print(top_tools)
+# Output: [{'name': 'query_postgres', 'description': 'Execute read-only SQL queries on Postgres'}]
 ```
 
 ### CLI Usage
